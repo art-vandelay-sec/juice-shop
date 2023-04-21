@@ -15,6 +15,14 @@ class ErrorWithParent extends Error {
   parent: Error | undefined
 }
 
+function sqli(param: string) {
+  models.sequelize.query(`SELECT * FROM Products WHERE (name = '%${param}%'`)
+    .then(([products]: any) => {
+    }).catch((error: ErrorWithParent) => {
+      next(error.parent)
+    })
+}
+
 // vuln-code-snippet start unionSqlInjectionChallenge dbSchemaChallenge
 module.exports = function searchProducts () {
   return (req: Request, res: Response, next: NextFunction) => {
