@@ -15,8 +15,13 @@ class ErrorWithParent extends Error {
   parent: Error | undefined
 }
 
+function sanitize(input: string): string {
+    return input.replace(/[^a-zA-Z]+/g, '');
+}
+
 function sqli(param: string) {
-  models.sequelize.query(`SELECT * FROM Products WHERE (name = '%${param}%'`)
+  const p = sanitize(param);
+  models.sequelize.query(`SELECT * FROM Products WHERE (name = '%${p}%'`)
     .then(([products]: any) => {
     }).catch((error: ErrorWithParent) => {
       next(error.parent)
