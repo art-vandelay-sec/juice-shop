@@ -167,9 +167,10 @@ export class SearchResultComponent implements OnDestroy, AfterViewInit {
 
   startHackingInstructor (challengeName: string) {
     console.log(`Starting instructions for challenge "${challengeName}"`)
-    import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(module => {
-      module.startHackingInstructorFor(challengeName)
-    })
+    //WORKAROUND
+    //import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(module => {
+    //  module.startHackingInstructorFor(challengeName)
+    //})
   }
 
   showDetail (element: Product) {
