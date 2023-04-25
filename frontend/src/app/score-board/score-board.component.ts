@@ -103,9 +103,10 @@ export class ScoreBoardComponent implements OnInit {
               this.availableChallengeCategories.push(challenges[i].category)
             }
             if (this.showHackingInstructor) {
-              import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(module => {
-                challenges[i].hasTutorial = module.hasInstructions(challenges[i].name)
-              })
+              //WORKAROUND                                       
+              //import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(module => {
+              //  challenges[i].hasTutorial = module.hasInstructions(challenges[i].name)
+              //})
             }
             challenges[i].hasSnippet = challengesWithCodeSnippet.indexOf(challenges[i].key) > -1
           }
@@ -349,9 +350,10 @@ export class ScoreBoardComponent implements OnInit {
 
   startHackingInstructor (challengeName: string) {
     console.log(`Starting instructions for challenge "${challengeName}"`)
-    import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(module => {
-      module.startHackingInstructorFor(challengeName)
-    })
+    //WORKAROUND
+    //import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(module => {
+    //  module.startHackingInstructorFor(challengeName)
+    //})
   }
 
   trackById (index: number, item: any) {
