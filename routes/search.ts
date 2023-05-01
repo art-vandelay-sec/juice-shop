@@ -15,25 +15,11 @@ class ErrorWithParent extends Error {
   parent: Error | undefined
 }
 
-function sanitize(input: string): string {
-    return input.replace(/[^a-zA-Z]+/g, '');
-}
-
-function sqli(param: string) {
-  const p = sanitize(param);
-  models.sequelize.query(`SELECT * FROM Products WHERE (name = '%${p}%'`)
-    .then(([products]: any) => {
-    }).catch((error: ErrorWithParent) => {
-      next(error.parent)
-    })
-}
-
 // vuln-code-snippet start unionSqlInjectionChallenge dbSchemaChallenge
 module.exports = function searchProducts () {
   return (req: Request, res: Response, next: NextFunction) => {
     let criteria: any = req.query.q === 'undefined' ? '' : req.query.q ?? ''
     criteria = (criteria.length <= 200) ? criteria : criteria.substring(0, 200)
-    sqli(req.query.p);
     models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`) // vuln-code-snippet vuln-line unionSqlInjectionChallenge dbSchemaChallenge
       .then(([products]: any) => {
         const dataString = JSON.stringify(products)
